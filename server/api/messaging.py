@@ -32,7 +32,7 @@ async def post_message(
     return await send_message(message, user, dbSession)
 
 
-@messaging_router.post("/chat-session", response_model=list[ChatSession])
+@messaging_router.get("/chat-session", response_model=list[ChatSession])
 async def get_chat_sessions(
     dbSession: DbSessionDependency, user: UserRecord = Depends(firebase_auth_dependency)
 ):
