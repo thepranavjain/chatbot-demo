@@ -21,7 +21,13 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Run development server 
+4. Env vars -
+
+Make sure you populate a `.env` with required env vars. You may refer `sample.env.txt` for spec.
+
+Also, have a `serviceAccountKey.json` from firebase in this dir for auth. You can refer to `sampleServiceAccountKey.json` to see what that looks like
+
+5. Run development server 
 ```sh
 fastapi dev main.py
 ```

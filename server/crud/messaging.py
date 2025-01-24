@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import Query
 from sqlmodel import Session as DbSession, select
 
-from core.utils import add_and_commit
 from dto.messaging import MessageRole
 from models.messaging import Message, ChatSession
+from utils.db_utils import add_and_commit
 
 
 def create_message(

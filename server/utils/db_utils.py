@@ -3,22 +3,11 @@ from typing import Annotated, TypeVar
 from fastapi import Depends
 from sqlmodel import Session, SQLModel
 
-from .db import engine
+from core.db import engine
 
 
 def init_db():
     SQLModel.metadata.create_all(engine)
-
-
-def get_session():
-    with Session(engine) as session:
-        try:
-            yield session
-        finally:
-            session.close()
-
-
-DbSessionDependency = Annotated[Session, Depends(get_session)]
 
 
 T = TypeVar("T")
