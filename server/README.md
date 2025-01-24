@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 Make sure you populate a `.env` with required env vars. You may refer `sample.env.txt` for spec.
 
-Also, have a `serviceAccountKey.json` from firebase in this dir for auth. You can refer to `sampleServiceAccountKey.json` to see what that looks like
+Also, have a `serviceAccountKey.json` from firebase in this dir for auth.
 
 5. Run development server 
 ```sh
