@@ -1,37 +1,22 @@
-import React, { useContext } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
-import { AuthContext } from "../../context/AuthContext";
+import React from "react";
+import useLogin from "../../hooks/useLogin";
 
 const AllChatsPage: React.FC = () => {
-  const authContext = useContext(AuthContext);
-
-  if (!authContext) {
-    throw new Error("AuthContext must be used within an AuthProvider");
-  }
-
-  const { user } = authContext;
-
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => console.log("User signed out"))
-      .catch((error) => console.error("Error during logout:", error));
-  };
+  const { user, handleLogout } = useLogin();
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Welcome, {user?.displayName || "User"}!</h1>
-      <button
-        onClick={handleLogout}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-        }}
-      >
-        Logout
-      </button>
-    </div>
+    <>
+      <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div className="container-fluid">
+          <div className="navbar-brand">Welcome {user?.displayName}!</div>
+          <div className="d-flex ms-auto">
+            <button className="btn btn-danger" onClick={() => handleLogout()}>
+              Logout
+            </button>
+          </div>
+        </div>
+      </nav>
+    </>
   );
 };
 
