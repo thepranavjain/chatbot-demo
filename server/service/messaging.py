@@ -1,4 +1,5 @@
 from datetime import datetime
+from logging import getLogger
 
 from fastapi import HTTPException
 from firebase_admin.auth import UserRecord
@@ -12,11 +13,14 @@ from crud.messaging import (
     get_all_messages_by_session,
     get_chat_session_by_id,
     get_messages_by_session as get_messages_by_session_crud,
+    update_chat_session,
 )
-from service.gpt import chat
+from service.gpt import chat, get_chat_topic
 
 
 CHAT_HISTORY_LIMIT = 20
+
+logger = getLogger()
 
 
 async def send_message(message: MessageInput, user: UserRecord, dbSession: Session):
@@ -30,7 +34,7 @@ async def send_message(message: MessageInput, user: UserRecord, dbSession: Sessi
         if chat_session.user_email != user.email or not chat_session:
             raise HTTPException(status_code=404, detail="Chat session not found")
 
-    create_message(
+    input_message = create_message(
         dbSession,
         content=message.content,
         session_id=message.session_id,
@@ -48,6 +52,13 @@ async def send_message(message: MessageInput, user: UserRecord, dbSession: Sessi
         session_id=message.session_id,
         role=MessageRole.SYSTEM,
     )
+
+    if new_session:
+        try:
+            chat_topic = await get_chat_topic([input_message, reply])
+            update_chat_session(dbSession, new_session.id, name=chat_topic)
+        except Exception as e:
+            logger.error(f"Failed to update chat session with topic: {e}")
 
     return reply
 

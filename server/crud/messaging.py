@@ -51,3 +51,17 @@ def get_all_chat_sessions_by_user(dbSession: DbSession, user_email: str):
         .where(ChatSession.user_email == user_email)
         .order_by(ChatSession.id.desc())
     ).all()
+
+
+def update_chat_session(dbSession: DbSession, session_id: int, name: str = None, user_email: str = None):
+    session = dbSession.get(ChatSession, session_id)
+    if session:
+        if name is not None:
+            session.name = name
+        if user_email is not None:
+            session.user_email = user_email
+        dbSession.add(session)  # Mark the session for update
+        dbSession.commit()      # Commit the changes
+    return session
+
+
