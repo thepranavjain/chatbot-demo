@@ -15,7 +15,7 @@ export const useChatSession = (sessionId?: string | null) => {
       if (sessionId) {
         setLoading(true);
         const response = await axiosAuthInstance.get(
-          `/messaging/chat-session/messages/${sessionId}`
+          `/messaging/chat-session/${sessionId}/messages`
         );
         setMessages(response.data);
         setLoading(false);

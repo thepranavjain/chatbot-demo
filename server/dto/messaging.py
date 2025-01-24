@@ -23,6 +23,10 @@ class MessageInput(BaseModel):
     session_id: int | None = None
 
 
+class UpdateMessageInput(BaseModel):
+    content: str
+
+
 class SendMessageRes(BaseModel):
     user_message: Message
     reply: Message
