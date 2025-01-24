@@ -21,7 +21,7 @@ const AllChatsPage: React.FC = () => {
               <div className="card-body">
                 <h5 className="card-title">{session.name}</h5>
                 <p className="card-text">
-                  {new Date(session.name).toDateString()}
+                  {new Date(session.created).toDateString()}
                 </p>
               </div>
             </a>
