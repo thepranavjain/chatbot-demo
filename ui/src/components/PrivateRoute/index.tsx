@@ -1,25 +1,35 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import useLogin from "../../hooks/useLogin";
 
 interface PrivateRouteProps {
   children: JSX.Element;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const authContext = useContext(AuthContext);
+  const { user, authLoading, handleLogout } = useLogin();
 
-  if (!authContext) {
-    throw new Error("AuthContext must be used within an AuthProvider");
-  }
-
-  const { user, loading } = authContext;
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  return user ? children : <Navigate to="/" />;
+  return authLoading ? (
+    <div className="vh-100 vw-100 d-grid justify-content-center align-items-center">
+      Loading...
+    </div>
+  ) : user ? (
+    <>
+      <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div className="container-fluid">
+          <div className="navbar-brand">Welcome {user?.displayName}!</div>
+          <div className="d-flex ms-auto">
+            <button className="btn btn-danger" onClick={() => handleLogout()}>
+              Logout
+            </button>
+          </div>
+        </div>
+      </nav>
+      {children}
+    </>
+  ) : (
+    <Navigate to="/" />
+  );
 };
 
 export default PrivateRoute;

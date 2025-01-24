@@ -5,6 +5,7 @@ import AllChatsPage from "./components/AllChatsPage";
 import HomePage from "./components/HomePage";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import ChatPage from "./components/ChatPage";
 
 function App() {
   return (
@@ -18,6 +19,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <AllChatsPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/chat/:sessionId"
+              element={
+                <PrivateRoute>
+                  <ChatPage />
                 </PrivateRoute>
               }
             />

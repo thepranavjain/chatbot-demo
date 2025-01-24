@@ -1,22 +1,34 @@
 import React from "react";
-import useLogin from "../../hooks/useLogin";
+import useAllChats from "./useAllChats";
+import { Link } from "react-router-dom";
 
 const AllChatsPage: React.FC = () => {
-  const { user, handleLogout } = useLogin();
+  const { chatSessions } = useAllChats();
 
   return (
-    <>
-      <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-        <div className="container-fluid">
-          <div className="navbar-brand">Welcome {user?.displayName}!</div>
-          <div className="d-flex ms-auto">
-            <button className="btn btn-danger" onClick={() => handleLogout()}>
-              Logout
-            </button>
+    <div className="container py-3">
+      <Link to={"/chat/new"}>
+        <button className="btn btn-primary mb-3">+ New Chat</button>
+      </Link>
+      <div className="row">
+        {chatSessions.map((session) => (
+          <div className="col-12 col-md-4 mb-3" key={session.id}>
+            <a
+              href={`/chat/${session.id}`}
+              className="card"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <div className="card-body">
+                <h5 className="card-title">{session.name}</h5>
+                <p className="card-text">
+                  {new Date(session.name).toDateString()}
+                </p>
+              </div>
+            </a>
           </div>
-        </div>
-      </nav>
-    </>
+        ))}
+      </div>
+    </div>
   );
 };
 
