@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from firebase_admin.auth import UserRecord
 from sqlmodel import Session
 
-from dto.messaging import MessageInput, MessageRole
+from dto.messaging import MessageInput, SendMessageRes
 from crud.messaging import (
     create_message,
     create_chat_session,
@@ -15,6 +15,7 @@ from crud.messaging import (
     get_messages_by_session as get_messages_by_session_crud,
     update_chat_session,
 )
+from models.messaging import MessageRole
 from service.gpt import chat, get_chat_topic
 
 
@@ -24,17 +25,19 @@ logger = getLogger()
 
 
 async def send_message(message: MessageInput, user: UserRecord, dbSession: Session):
+    new_session_created = False
     if not message.session_id:
         new_session = create_chat_session(
             dbSession, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user.email
         )
         message.session_id = new_session.id
+        new_session_created = True
     else:
         chat_session = get_chat_session_by_id(dbSession, message.session_id)
         if chat_session.user_email != user.email or not chat_session:
             raise HTTPException(status_code=404, detail="Chat session not found")
 
-    input_message = create_message(
+    user_message = create_message(
         dbSession,
         content=message.content,
         session_id=message.session_id,
@@ -53,14 +56,14 @@ async def send_message(message: MessageInput, user: UserRecord, dbSession: Sessi
         role=MessageRole.SYSTEM,
     )
 
-    if new_session:
+    if new_session_created:
         try:
-            chat_topic = await get_chat_topic([input_message, reply])
-            update_chat_session(dbSession, new_session.id, name=chat_topic)
+            chat_topic = await get_chat_topic([user_message, reply])
+            update_chat_session(dbSession, user_message.session_id, name=chat_topic)
         except Exception as e:
             logger.error(f"Failed to update chat session with topic: {e}")
 
-    return reply
+    return SendMessageRes(user_message=user_message, reply=reply)
 
 
 def get_chat_sessions_by_user(user: UserRecord, dbSession: Session):

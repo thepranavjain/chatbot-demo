@@ -19,3 +19,8 @@ export interface ChatMessage {
   created: string;
   updated: string;
 }
+
+export interface SendMessageRes {
+  user_message: ChatMessage;
+  reply: ChatMessage;
+}

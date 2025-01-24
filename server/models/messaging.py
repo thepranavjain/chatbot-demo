@@ -1,8 +1,14 @@
+from enum import Enum
+
 from sqlmodel import Field, SQLModel, Relationship
 from sqlalchemy import Column, Integer, Enum as SQLAlchemyEnum
 
-from dto.messaging import MessageRole
 from utils.db_utils import AutoIncrementIdMixin, TimestampMixin
+
+
+class MessageRole(Enum):
+    USER = "user"
+    SYSTEM = "system"
 
 
 class ChatSession(AutoIncrementIdMixin, TimestampMixin, SQLModel, table=True):

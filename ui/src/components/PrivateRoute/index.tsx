@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
+import LoadingSpinner from "../LoadingSpinner";
 
 interface PrivateRouteProps {
   children: JSX.Element;
@@ -11,7 +12,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 
   return authLoading ? (
     <div className="vh-100 vw-100 d-grid justify-content-center align-items-center">
-      Loading...
+      <LoadingSpinner />
     </div>
   ) : user ? (
     <>

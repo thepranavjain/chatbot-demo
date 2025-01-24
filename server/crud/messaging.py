@@ -3,8 +3,7 @@ from typing import Annotated
 from fastapi import Query
 from sqlmodel import Session as DbSession, select
 
-from dto.messaging import MessageRole
-from models.messaging import Message, ChatSession
+from models.messaging import Message, ChatSession, MessageRole
 from utils.db_utils import add_and_commit
 
 

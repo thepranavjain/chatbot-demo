@@ -3,7 +3,7 @@ from firebase_admin.auth import UserRecord
 
 from dependencies.auth import firebase_auth_dependency
 from dependencies.db import DbSessionDependency
-from dto.messaging import MessageInput
+from dto.messaging import MessageInput, SendMessageRes
 from models.messaging import ChatSession, Message
 from service.messaging import (
     send_message,
@@ -23,7 +23,7 @@ messaging_router = APIRouter(
 )
 
 
-@messaging_router.post("/message", response_model=Message)
+@messaging_router.post("/message", response_model=SendMessageRes)
 async def post_message(
     message: MessageInput,
     dbSession: DbSessionDependency,
