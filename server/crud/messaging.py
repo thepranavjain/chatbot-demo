@@ -16,8 +16,8 @@ def create_message(
     return new_message
 
 
-def create_chat_session(dbSession: DbSession, name: str):
-    new_session = ChatSession(name=name)
+def create_chat_session(dbSession: DbSession, name: str, user_email: str):
+    new_session = ChatSession(name=name, user_email=user_email)
     new_session = add_and_commit(dbSession, new_session)
     return new_session
 
@@ -43,3 +43,7 @@ def get_messages_by_session(
 
 def get_all_messages_by_session(dbSession: DbSession, session_id: int):
     return dbSession.exec(select(Message).where(Message.session_id == session_id)).all()
+
+
+def get_all_chat_sessions(dbSession: DbSession):
+    pass

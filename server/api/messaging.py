@@ -25,7 +25,7 @@ async def post_message(
     dbSession: DbSessionDependency,
     user: UserRecord = Depends(firebase_auth_dependency),
 ):
-    return await send_message(message, dbSession)
+    return await send_message(message, user, dbSession)
 
 
 @messaging_router.get("/session/messages/{session_id}", response_model=list[Message])
@@ -34,4 +34,4 @@ async def get_session_messages(
     dbSession: DbSessionDependency,
     user: UserRecord = Depends(firebase_auth_dependency),
 ):
-    return get_messages_by_session(session_id, dbSession)
+    return get_messages_by_session(session_id, user, dbSession)
