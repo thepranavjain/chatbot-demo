@@ -12,10 +12,13 @@ def init_db():
 
 def get_session():
     with Session(engine) as session:
-        yield session
+        try:
+            yield session
+        finally:
+            session.close()
 
 
-DbSessionDep = Annotated[Session, Depends(get_session)]
+DbSessionDependency = Annotated[Session, Depends(get_session)]
 
 
 T = TypeVar("T")
