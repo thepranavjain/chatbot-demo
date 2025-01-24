@@ -1,14 +1,20 @@
+from dotenv import load_dotenv
+
+# Load up env vars from .env
+load_dotenv()
+
 from logging import getLogger
+
+logger = getLogger()
 
 from fastapi import FastAPI
 
-from db.utils import init_db
+from core.utils import init_db
 from api.messaging import messaging_router
 
 
 router = FastAPI()
 
-logger = getLogger()
 
 logger.info("Initializing database...")
 init_db()

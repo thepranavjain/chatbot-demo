@@ -9,10 +9,15 @@ from crud.messaging import (
     create_chat_session,
     get_all_messages_by_session,
     get_chat_session_by_id,
+    get_messages_by_session as get_messages_by_session_crud,
 )
+from service.gpt import chat
 
 
-def send_message(message: MessageInput, dbSession: Session):
+CHAT_HISTORY_LIMIT = 20
+
+
+async def send_message(message: MessageInput, dbSession: Session):
     if not message.session_id:
         new_session = create_chat_session(
             dbSession, datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -30,9 +35,14 @@ def send_message(message: MessageInput, dbSession: Session):
         role=MessageRole.USER,
     )
 
+    recent_messages = get_messages_by_session_crud(
+        dbSession, session_id=message.session_id, limit=CHAT_HISTORY_LIMIT
+    ) # These are sorted by latest first
+    gpt_reply = await chat(list(reversed(recent_messages)))
+
     reply = create_message(
         dbSession,
-        content="Reply from system here",
+        content=gpt_reply,
         session_id=message.session_id,
         role=MessageRole.SYSTEM,
     )
