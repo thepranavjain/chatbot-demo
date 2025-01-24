@@ -45,5 +45,9 @@ def get_all_messages_by_session(dbSession: DbSession, session_id: int):
     return dbSession.exec(select(Message).where(Message.session_id == session_id)).all()
 
 
-def get_all_chat_sessions(dbSession: DbSession):
-    pass
+def get_all_chat_sessions_by_user(dbSession: DbSession, user_email: str):
+    return dbSession.exec(
+        select(ChatSession)
+        .where(ChatSession.user_email == user_email)
+        .order_by(ChatSession.id.desc())
+    ).all()

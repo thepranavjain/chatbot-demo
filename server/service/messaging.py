@@ -8,6 +8,7 @@ from dto.messaging import MessageInput, MessageRole
 from crud.messaging import (
     create_message,
     create_chat_session,
+    get_all_chat_sessions_by_user,
     get_all_messages_by_session,
     get_chat_session_by_id,
     get_messages_by_session as get_messages_by_session_crud,
@@ -49,6 +50,10 @@ async def send_message(message: MessageInput, user: UserRecord, dbSession: Sessi
     )
 
     return reply
+
+
+def get_chat_sessions_by_user(user: UserRecord, dbSession: Session):
+    return get_all_chat_sessions_by_user(dbSession, user.email)
 
 
 def get_messages_by_session(session_id: int, user: UserRecord, dbSession: Session):
