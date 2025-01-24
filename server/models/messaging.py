@@ -2,17 +2,16 @@ from sqlmodel import Field, SQLModel, Relationship
 from sqlalchemy import Column, Integer, Enum as SQLAlchemyEnum
 
 from dto.messaging import MessageRole
+from utils.db_utils import AutoIncrementIdMixin, TimestampMixin
 
 
-class ChatSession(SQLModel, table=True):
-    id: int = Field(sa_column=Column(Integer, primary_key=True, autoincrement=True))
+class ChatSession(AutoIncrementIdMixin, TimestampMixin, SQLModel, table=True):
     name: str | None
     user_email: str
     messages: list["Message"] = Relationship(back_populates="session")
 
 
-class Message(SQLModel, table=True):
-    id: int = Field(sa_column=Column(Integer, primary_key=True, autoincrement=True))
+class Message(AutoIncrementIdMixin, TimestampMixin, SQLModel, table=True):
     content: str
     role: MessageRole = Field(sa_column=Column(SQLAlchemyEnum(MessageRole)))
     session_id: int = Field(foreign_key="chatsession.id")
