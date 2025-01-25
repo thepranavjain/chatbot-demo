@@ -1,0 +1,25 @@
+.chat-session {
+  .delete-button {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    display: none;
+  }
+
+  &:hover .delete-button {
+    display: grid;
+    place-content: center;
+  }
+}
+
+.chat-session-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+.disabled-link {
+  pointer-events: none;
+}
