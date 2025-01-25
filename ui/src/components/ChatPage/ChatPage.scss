@@ -18,13 +18,8 @@
   margin: 0.5rem 0;
 }
 
-.bg-primary {
-  background-color: #007bff; /* Example primary color */
+.message-content.bg-primary {
   color: white;
-}
-
-.bg-light {
-  background-color: #f8f9fa; /* Example light color */
 }
 
 .wrapper {
@@ -42,4 +37,19 @@
 .input-group {
   display: flex;
   gap: 0.5rem; /* Adjust gap as needed */
+}
+
+.message {
+  &:hover .edit-icons {
+    display: flex;
+
+    button {
+      display: grid;
+      place-content: center;
+    }
+  }
+}
+
+.edit-icons {
+  display: none;
 }

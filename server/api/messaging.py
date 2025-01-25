@@ -35,7 +35,7 @@ async def post_message(
     return await send_message(message, user, dbSession)
 
 
-@messaging_router.patch("message/{message_id}", response_model=Message)
+@messaging_router.patch("/message/{message_id}", response_model=Message)
 async def patch_message(
     message_id: int,
     payload: UpdateMessageInput,
@@ -45,7 +45,7 @@ async def patch_message(
     return update_message(message_id, payload, user, dbSession)
 
 
-@messaging_router.delete("message/{message_id}")
+@messaging_router.delete("/message/{message_id}")
 async def delete_message(
     message_id: int,
     dbSession: DbSessionDependency,
@@ -72,7 +72,7 @@ async def get_session_messages(
     return get_messages_by_session(session_id, user, dbSession)
 
 
-@messaging_router.delete("chat-session/{session_id}")
+@messaging_router.delete("/chat-session/{session_id}")
 async def delete_chat_session(
     session_id: int,
     dbSession: DbSessionDependency,

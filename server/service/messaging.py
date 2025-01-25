@@ -59,9 +59,12 @@ async def send_message(message: MessageInput, user: UserRecord, dbSession: Sessi
     )
 
     recent_messages = get_messages_by_session_crud(
-        dbSession, session_id=message.session_id, limit=CHAT_HISTORY_LIMIT
+        dbSession,
+        session_id=message.session_id,
+        limit=CHAT_HISTORY_LIMIT,
+        order_by="desc",
     )  # These are sorted by latest first
-    gpt_reply = await chat(list(reversed(recent_messages)))
+    gpt_reply = await chat(recent_messages)
 
     reply = create_message(
         dbSession,

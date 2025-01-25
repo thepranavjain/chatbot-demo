@@ -7,13 +7,28 @@ import { cx } from "@emotion/css";
 import { useChatWindowScrolling } from "./useChatWindowScrolling";
 import { useChatNavigation } from "./useChatNavigation";
 import { ReactComponent as BackIcon } from "../../assets/icons/back-icon.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/icons/delete-icon.svg";
+import { ReactComponent as EditIcon } from "../../assets/icons/edit-icon.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icons/close-icon.svg";
 import LoadingSpinner from "../LoadingSpinner";
+import { MessageRole } from "../../utils/types";
 
 const ChatPage = () => {
   const { sessionId } = useChatNavigation();
 
-  const { messages, input, setInput, sendMessage, isSendingMessage, loading } =
-    useChatSession(sessionId);
+  const {
+    messages,
+    input,
+    setInput,
+    sendMessage,
+    isSendingMessage,
+    loading,
+    editMode,
+    closeEdit,
+    handleDelete,
+    handleEdit,
+    handleEditSubmit,
+  } = useChatSession(sessionId);
 
   const { chatWindowRef } = useChatWindowScrolling(messages);
 
@@ -30,23 +45,76 @@ const ChatPage = () => {
           {loading ? (
             <LoadingSpinner />
           ) : (
-            messages.map((msg: any) => (
+            messages.map((msg) => (
               <div
                 key={msg.id}
                 className={cx(
-                  "message d-flex",
-                  msg.role === "user"
+                  "message d-flex align-items-center",
+                  msg.role === MessageRole.USER
                     ? "text-end justify-content-end"
                     : "text-start justify-content-start"
                 )}
               >
+                {msg.role === MessageRole.USER && (
+                  <div className="edit-icons justify-content-center align-items-center">
+                    {editMode ? (
+                      <button
+                        className="btn btn-light m-2"
+                        onClick={() => closeEdit()}
+                        disabled={isSendingMessage}
+                      >
+                        <CloseIcon height="16px" width="16px" />
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          className="btn btn-light m-2"
+                          onClick={() => handleEdit(msg)}
+                          disabled={isSendingMessage}
+                        >
+                          <EditIcon height="16px" width="16px" />
+                        </button>
+                        <button
+                          className="btn btn-light m-2"
+                          onClick={() => handleDelete(msg.id)}
+                          disabled={isSendingMessage}
+                        >
+                          <DeleteIcon height="16px" width="16px" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
                 <div
                   className={cx("message-content", {
-                    "bg-primary": msg.role === "user",
-                    "bg-light": msg.role !== "user",
+                    "bg-primary": msg.role === MessageRole.USER,
+                    "bg-light": msg.role !== MessageRole.USER,
+                    "w-100": Boolean(editMode?.id),
                   })}
                 >
-                  <Markdown>{msg.content}</Markdown>
+                  {editMode && editMode?.id === msg.id ? (
+                    <form
+                      className="w-100"
+                      onSubmit={(e) => handleEditSubmit(e, msg.id)}
+                    >
+                      <input
+                        type="text"
+                        className="w-100"
+                        value={editMode.content}
+                        onChange={(e) =>
+                          handleEdit({
+                            ...editMode,
+                            content: e.target.value,
+                          })
+                        }
+                        autoFocus
+                      />
+                    </form>
+                  ) : (
+                    <>
+                      <Markdown>{msg.content}</Markdown>
+                    </>
+                  )}
                 </div>
               </div>
             ))

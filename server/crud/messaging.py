@@ -38,7 +38,7 @@ def update_chat_session(
             session.name = name
         if user_email is not None:
             session.user_email = user_email
-        session = add_and_commit(session)
+        session = add_and_commit(dbSession, session)
     return session
 
 
@@ -55,12 +55,13 @@ def get_messages_by_session(
     session_id: int,
     limit: int | None = None,
     offset: int | None = None,
+    order_by: str = "asc",
 ):
-    query = (
-        select(Message)
-        .where(Message.session_id == session_id)
-        .order_by(Message.id.desc())
-    )
+    query = select(Message).where(Message.session_id == session_id)
+    if order_by == "desc":
+        query.order_by(Message.id.desc())
+    else:
+        query.order_by(Message.id.asc())
     if limit != None:
         query.limit(limit)
     if offset != None:
