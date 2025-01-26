@@ -31,3 +31,15 @@ Also, have a `serviceAccountKey.json` from firebase in this dir for auth.
 ```sh
 fastapi dev main.py
 ```
+
+## Test
+
+Install the dependencies (one-time or if you face any dependency issues)
+```sh
+pip install -r requirements.txt
+```
+
+Then run -
+```sh
+pytest
+```
