@@ -1,8 +1,8 @@
 from core.openai import async_openai_client
-from models.messaging import Message
+from dto.gpt import GPTMessageDto
 
 
-async def chat(messages: list[Message]):
+async def chat(messages: list[GPTMessageDto]):
     gpt_messages = [
         {
             "role": "system",
@@ -21,7 +21,7 @@ async def chat(messages: list[Message]):
     return response.choices[0].message.content
 
 
-async def get_chat_topic(messages: list[Message]):
+async def get_chat_topic(messages: list[GPTMessageDto]):
     gpt_messages = [
         *[
             {"role": messageEntity.role.value.lower(), "content": messageEntity.content}

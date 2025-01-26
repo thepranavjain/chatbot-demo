@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 from logging import getLogger
 
@@ -5,6 +6,7 @@ from fastapi import HTTPException
 from firebase_admin.auth import UserRecord
 from sqlmodel import Session
 
+from dependencies.db import get_session
 from dto.messaging import MessageInput, SendMessageRes, UpdateMessageInput
 from crud.messaging import (
     create_message,
@@ -18,7 +20,7 @@ from crud.messaging import (
     delete_message,
     delete_chat_session,
 )
-from models.messaging import MessageRole
+from models.messaging import MessageRole, Message
 from service.gpt import chat, get_chat_topic
 
 
@@ -38,11 +40,20 @@ def remove_chat_session(session_id: int, user: UserRecord, dbSession: Session):
     delete_chat_session(dbSession, chat_session)
 
 
+async def update_chat_session_name(messages: list[Message], chat_session_id: int):
+    try:
+        dbSession = next(get_session())
+        chat_topic = await get_chat_topic(messages)
+        update_chat_session(dbSession, chat_session_id, name=chat_topic)
+    except Exception as e:
+        logger.error(f"Failed to update chat session with topic: {e}")
+
+
 async def send_message(message: MessageInput, user: UserRecord, dbSession: Session):
     new_session_created = False
     if not message.session_id:
         new_session = create_chat_session(
-            dbSession, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user.email
+            dbSession, name=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), user_email=user.email
         )
         message.session_id = new_session.id
         new_session_created = True
@@ -75,10 +86,9 @@ async def send_message(message: MessageInput, user: UserRecord, dbSession: Sessi
 
     if new_session_created:
         try:
-            chat_topic = await get_chat_topic([user_message, reply])
-            update_chat_session(dbSession, user_message.session_id, name=chat_topic)
+            asyncio.create_task(update_chat_session_name([user_message, reply], user_message.session_id))
         except Exception as e:
-            logger.error(f"Failed to update chat session with topic: {e}")
+            logger.error(f"Failed to schedule chat session update: {e}")
 
     return SendMessageRes(user_message=user_message, reply=reply)
 
