@@ -1,7 +1,7 @@
 import React from "react";
 import "./AllChatsPage.scss";
 import useAllChats from "./useAllChats";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { ReactComponent as DeleteIcon } from "../../assets/icons/close-icon.svg";
 import LoadingSpinner from "../LoadingSpinner";
 import { cx } from "@emotion/css";
@@ -41,6 +41,7 @@ const AllChatsPage: React.FC = () => {
                 onClick={() => deleteChat(session.id)}
                 className="btn btn-light delete-button p-1"
                 disabled={isApiCallOngoing}
+                data-testid={`delete-chat-${session.id}`}
               >
                 <DeleteIcon height="20px" className="delete-icon" />
               </button>

@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AllChatsPage renders chat sessions 1`] = `
+<DocumentFragment>
+  <div
+    class="container py-3"
+  >
+    <a
+      data-discover="true"
+      href="/chat/new"
+    >
+      <button
+        class="btn btn-primary mb-3"
+      >
+        + New Chat
+      </button>
+    </a>
+    <div
+      class="row"
+    >
+      <div
+        class="chat-session col-12 col-md-4 mb-3 position-relative"
+      >
+        <a
+          class="card chat-session-card"
+          data-discover="true"
+          href="/chat/1"
+          style="text-decoration: none;"
+        >
+          <div
+            class="card-body"
+          >
+            <h5
+              class="card-title"
+            >
+              Chat 1
+            </h5>
+            <p
+              class="card-text"
+            >
+              Wed Jan 01 2025
+            </p>
+          </div>
+        </a>
+        <button
+          class="btn btn-light delete-button p-1"
+          data-testid="delete-chat-1"
+        >
+          <svg
+            class="delete-icon"
+            height="20px"
+          >
+            close-icon.svg
+          </svg>
+        </button>
+      </div>
+      <div
+        class="chat-session col-12 col-md-4 mb-3 position-relative"
+      >
+        <a
+          class="card chat-session-card"
+          data-discover="true"
+          href="/chat/2"
+          style="text-decoration: none;"
+        >
+          <div
+            class="card-body"
+          >
+            <h5
+              class="card-title"
+            >
+              Chat 2
+            </h5>
+            <p
+              class="card-text"
+            >
+              Thu Jan 02 2025
+            </p>
+          </div>
+        </a>
+        <button
+          class="btn btn-light delete-button p-1"
+          data-testid="delete-chat-2"
+        >
+          <svg
+            class="delete-icon"
+            height="20px"
+          >
+            close-icon.svg
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`AllChatsPage renders loading spinner when loading 1`] = `
+<DocumentFragment>
+  <div
+    class="container py-3"
+  >
+    <a
+      data-discover="true"
+      href="/chat/new"
+    >
+      <button
+        class="btn btn-primary mb-3"
+      >
+        + New Chat
+      </button>
+    </a>
+    <div
+      class="spinner"
+    >
+      <svg
+        class="loader-icon"
+        height="40px"
+        width="40px"
+      >
+        loader.svg
+      </svg>
+    </div>
+  </div>
+</DocumentFragment>
+`;

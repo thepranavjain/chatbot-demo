@@ -48,5 +48,10 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16.2.0"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/node/axios.cjs"
+    }
   }
 }

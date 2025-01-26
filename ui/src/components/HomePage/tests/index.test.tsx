@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import HomePage from "../index";
 import useHomePage from "../useHomePage";
 
-// Mock the useHomePage hook
 jest.mock("../useHomePage");
 
 describe("HomePage", () => {
