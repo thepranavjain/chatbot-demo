@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 
 const useHomePage = () => {

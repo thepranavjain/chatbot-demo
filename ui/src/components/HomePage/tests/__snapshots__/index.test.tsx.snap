@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomePage renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="vh-100 vw-100 d-grid justify-content-center align-items-center"
+  >
+    <div
+      class="d-flex flex-column gap-3 align-items-center"
+    >
+      <div>
+        Welcome to my Chatbot app!
+      </div>
+      <div>
+        Please login
+      </div>
+      <button
+        class="btn btn-outline-primary d-grid justify-content-center align-items-center p-3"
+      >
+        <svg
+          height="20px"
+          width="20px"
+        >
+          google-icon.svg
+        </svg>
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
